@@ -6,95 +6,70 @@
     <title>Sumo Sent | Institutional Routing</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Custom Terminal Font */
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #030712; color: #f8fafc; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
-        .glass-panel { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(51, 65, 85, 0.5); }
+        .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(51, 65, 85, 0.5); }
         .glow-button { box-shadow: 0 0 15px rgba(16, 185, 129, 0.3); }
         .glow-button:hover { box-shadow: 0 0 25px rgba(16, 185, 129, 0.6); }
     </style>
-    <script>
-        function initiateBroadcast() {
-            const message = encodeURIComponent(document.getElementById('payload').value);
-            const numbers = document.getElementById('nodes').value.split('\n');
-            const output = document.getElementById('terminal-output');
-            const terminal = document.getElementById('terminal-window');
-            
-            output.innerHTML = ''; 
-
-            if (!message || numbers.length === 0 || numbers[0] === "") {
-                output.innerHTML = '<span class="text-red-500">> ERR: PAYLOAD OR TARGET NODES MISSING.</span>';
-                terminal.classList.remove('hidden');
-                return;
-            }
-
-            output.innerHTML = '<span class="text-yellow-500">> ESTABLISHING ZERO-KNOWLEDGE TUNNEL...</span><br/>';
-            
-            setTimeout(() => {
-                output.innerHTML += '<span class="text-green-400">> BYPASSING RETAIL ROUTERS...</span><br/>';
-                output.innerHTML += '<span class="text-green-400">> CLEARANCE GRANTED. GENERATING LINKS:</span><br/><br/>';
-                
-                numbers.forEach(num => {
-                    const cleanNum = num.replace(/\D/g, ''); 
-                    if (cleanNum.length >= 10) {
-                        const finalNum = cleanNum.length === 10 ? '91' + cleanNum : cleanNum;
-                        const link = `https://wa.me/${finalNum}?text=${message}`;
-                        
-                        output.innerHTML += `<a href="${link}" target="_blank" class="block text-green-400 hover:text-white mb-2 transition">> EXECUTE: [ SEND TO +${finalNum} ]</a>`;
-                    }
-                });
-            }, 800);
-
-            terminal.classList.remove('hidden');
-        }
-    </script>
 </head>
 <body class="relative min-h-screen flex items-center justify-center p-4 overflow-x-hidden">
 
     <div class="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-blue-900/20 rounded-full blur-[120px] pointer-events-none"></div>
     <div class="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-emerald-900/10 rounded-full blur-[100px] pointer-events-none"></div>
 
-    <div class="relative w-full max-w-md">
-        <div class="flex justify-between items-center mb-8 px-2">
+    <div class="relative w-full max-w-md z-10">
+        
+        <div class="flex justify-between items-center mb-6 px-2">
             <h1 class="text-2xl font-extrabold tracking-tight">Sumo<span class="text-gray-400">Sent.</span></h1>
             <div class="flex items-center space-x-2">
-                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span class="text-[10px] font-mono text-green-500 tracking-widest uppercase">System Online</span>
+                <div class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
+                <span class="text-[10px] font-mono text-yellow-500 tracking-widest uppercase">Awaiting Clearance</span>
             </div>
         </div>
 
-        <div class="glass-panel rounded-2xl p-6 shadow-2xl mb-6">
-            <h2 class="text-xl font-semibold mb-2">Institutional-grade Routing.</h2>
-            <p class="text-sm text-gray-400 mb-8">The dark-pool liquidity engine for direct-to-customer communication.</p>
-
-            <div class="space-y-5">
-                <div>
-                    <label class="block text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-2">Payload [ Message ]</label>
-                    <textarea id="payload" rows="2" class="w-full bg-[#030712] border border-gray-700 rounded-lg p-3 text-sm text-gray-200 focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-all outline-none" placeholder="Enter broadcast payload..."></textarea>
+        <div id="paywall" class="glass-panel rounded-2xl p-6 shadow-2xl mb-6 border-t-2 border-t-green-500">
+            <h2 class="text-xl font-semibold mb-2 text-center">Institutional License</h2>
+            <p class="text-sm text-gray-400 mb-6 text-center">Bypass API fees. Direct dark-pool WhatsApp routing. Lifetime access.</p>
+            
+            <div class="bg-[#030712] rounded-xl p-4 mb-6 border border-gray-800 flex flex-col items-center">
+                <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-3">Scan to Unlock Protocol</span>
+                <h3 class="text-3xl font-bold text-white mb-4">₹999</h3>
+                
+                <div class="bg-white p-2 rounded-lg mb-4 w-48 h-48 flex items-center justify-center">
+                    <img src="qr.png" alt="PhonePe QR" class="w-full h-full object-contain">
                 </div>
-
-                <div>
-                    <label class="block text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-2">Target Nodes [ Numbers ]</label>
-                    <textarea id="nodes" rows="3" class="w-full bg-[#030712] border border-gray-700 rounded-lg p-3 text-sm font-mono text-gray-300 focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-all outline-none leading-relaxed" placeholder="919876543210&#10;919876543211"></textarea>
-                </div>
-
-                <button onclick="initiateBroadcast()" class="w-full bg-green-500 hover:bg-green-400 text-black font-bold font-mono tracking-wide py-4 rounded-lg transition-all glow-button mt-4">
-                    [ INITIATE BROADCAST ]
-                </button>
+                
+                <p class="text-xs text-gray-500 font-mono text-center">Accepted: PhonePe / GPay / Paytm<br>Merchant: Subham Praharaj</p>
             </div>
-        </div>
 
-        <div id="terminal-window" class="glass-panel rounded-xl p-4 hidden border-t-2 border-t-green-500/50">
-            <div class="flex items-center justify-between mb-3 border-b border-gray-800 pb-2">
-                <span class="text-[10px] font-mono text-gray-400 uppercase tracking-widest">[ SUMO ZERO-TRUST PROTOCOL ]</span>
-                <span onclick="document.getElementById('terminal-window').classList.add('hidden')" class="text-gray-500 hover:text-white cursor-pointer text-sm">✕</span>
-            </div>
-            <div id="terminal-output" class="font-mono text-xs leading-loose h-40 overflow-y-auto">
-                </div>
+            <button onclick="verifyPayment()" class="w-full bg-green-500 hover:bg-green-400 text-black font-bold font-mono tracking-wide py-4 rounded-lg transition-all glow-button">
+                [ I HAVE PAID: VERIFY NOW ]
+            </button>
         </div>
 
     </div>
+
+    <script>
+        function verifyPayment() {
+            // REPLACE THIS NUMBER WITH YOUR ACTUAL WHATSAPP NUMBER (include country code 91)
+            const adminNumber = "YOUR_PHONE_NUMBER_HERE"; 
+            
+            const message = encodeURIComponent("SYSTEM ALERT: I have paid ₹999 for the Sumo Sent Institutional License. Here is my payment screenshot for verification.");
+            const waLink = `https://wa.me/${adminNumber}?text=${message}`;
+            
+            // Open WhatsApp
+            window.open(waLink, '_blank');
+            
+            // UI Feedback
+            const btn = document.querySelector('button');
+            btn.innerHTML = "[ AWAITING MANUAL UNLOCK... ]";
+            btn.classList.remove('bg-green-500', 'hover:bg-green-400', 'text-black');
+            btn.classList.add('bg-gray-800', 'text-green-500', 'cursor-not-allowed');
+        }
+    </script>
 </body>
 </html>
+
 
